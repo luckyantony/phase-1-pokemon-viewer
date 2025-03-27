@@ -81,3 +81,13 @@ function showPokemonDetails(pokemon) {
 function closeModal() {
     modal.style.display = 'none';
 }
+
+function handleSearch() {
+    const searchTerm = searchInput.value.toLowerCase();
+    filteredPokemon = allPokemon.filter(pokemon => 
+        pokemon.name.includes(searchTerm) &&
+        (selectedTypes.length === 0 || 
+         selectedTypes.some(type => pokemon.types.includes(type)))
+    );
+    renderPokemon();
+}
