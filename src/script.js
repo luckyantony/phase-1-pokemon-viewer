@@ -80,6 +80,7 @@ function closeModal() {
     modal.style.display = 'none';
 }
 
+
 function handleSearch() {
     const searchTerm = searchInput.value.toLowerCase();
     filteredPokemon = allPokemon.filter(pokemon => 
