@@ -20,3 +20,35 @@ window.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
 });
 
+
+fetchPokemon();
+createTypeFilters();
+
+
+async function fetchPokemon() {
+    try {
+        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=50');
+        const data = await response.json();
+        
+        // Get details for each Pokémon
+        const pokemonWithDetails = await Promise.all(
+            data.results.map(async (pokemon) => {
+                const details = await fetch(pokemon.url).then(res => res.json());
+                return {
+                    id: details.id,
+                    name: details.name,
+                    image: details.sprites.front_default,
+                    height: details.height,
+                    weight: details.weight,
+                    types: details.types.map(t => t.type.name)
+                };
+            })
+        );
+        
+        allPokemon = pokemonWithDetails;
+        filteredPokemon = [...allPokemon];
+        renderPokemon();
+    } catch (error) {
+        console.error('Error fetching Pokémon:', error);
+    }
+}
