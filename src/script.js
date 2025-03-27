@@ -12,3 +12,11 @@ const closeBtn = document.querySelector('.close');
 let allPokemon = [];
 let filteredPokemon = [];
 let selectedTypes = [];
+
+searchInput.addEventListener('input', handleSearch);
+closeBtn.addEventListener('click', closeModal);
+
+window.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+});
+
