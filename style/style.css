@@ -58,9 +58,6 @@ header {
     transition: transform 0.2s;
 }
 
-.pokemon-card:hover {
-    transform: translateY(-5px);
-}
 
 .pokemon-card img {
     width: 100px;
