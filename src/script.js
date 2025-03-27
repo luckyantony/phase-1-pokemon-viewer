@@ -1,4 +1,4 @@
-// DOM Elements
+
 const pokemonGrid = document.getElementById('pokemonGrid');
 const searchInput = document.getElementById('search');
 const typeFilters = document.getElementById('typeFilters');
@@ -6,29 +6,19 @@ const modal = document.getElementById('pokemonModal');
 const modalContent = document.getElementById('modalContent');
 const closeBtn = document.querySelector('.close');
 
-// State
-let allPokemon = [];
-let filteredPokemon = [];
-let selectedTypes = [];
 
-// Event Listeners
-searchInput.addEventListener('input', handleSearch);
-closeBtn.addEventListener('click', closeModal);
-window.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-});
 
-// Initialize
+
 fetchPokemon();
 createTypeFilters();
 
-// Functions
+
 async function fetchPokemon() {
     try {
         const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=50');
         const data = await response.json();
         
-        // Get details for each Pokémon
+        
         const pokemonWithDetails = await Promise.all(
             data.results.map(async (pokemon) => {
                 const details = await fetch(pokemon.url).then(res => res.json());
@@ -65,16 +55,7 @@ function renderPokemon() {
     });
 }
 
-function showPokemonDetails(pokemon) {
-    modalContent.innerHTML = `
-        <h2>${pokemon.name}</h2>
-        <img src="${pokemon.image}" alt="${pokemon.name}">
-        <p>Height: ${pokemon.height / 10}m</p>
-        <p>Weight: ${pokemon.weight / 10}kg</p>
-        <p>Types: ${pokemon.types.join(', ')}</p>
-    `;
-    modal.style.display = 'block';
-}
+
 
 function closeModal() {
     modal.style.display = 'none';
@@ -91,24 +72,3 @@ function handleSearch() {
     renderPokemon();
 }
 
-function createTypeFilters() {
-    const types = ['fire', 'water', 'grass', 'electric', 'poison', 'flying', 'bug', 'normal'];
-    
-    types.forEach(type => {
-        const button = document.createElement('button');
-        button.textContent = type;
-        button.className = 'type-btn';
-        button.addEventListener('click', () => toggleTypeFilter(type));
-        typeFilters.appendChild(button);
-    });
-}
-
-function toggleTypeFilter(type) {
-    const index = selectedTypes.indexOf(type);
-    if (index === -1) {
-        selectedTypes.push(type);
-    } else {
-        selectedTypes.splice(index, 1);
-    }
-    handleSearch();
-}
