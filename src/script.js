@@ -66,3 +66,18 @@ function renderPokemon() {
         pokemonGrid.appendChild(card);
     });
 }
+
+function showPokemonDetails(pokemon) {
+    modalContent.innerHTML = `
+        <h2>${pokemon.name}</h2>
+        <img src="${pokemon.image}" alt="${pokemon.name}">
+        <p>Height: ${pokemon.height / 10}m</p>
+        <p>Weight: ${pokemon.weight / 10}kg</p>
+        <p>Types: ${pokemon.types.join(', ')}</p>
+    `;
+    modal.style.display = 'block';
+}
+
+function closeModal() {
+    modal.style.display = 'none';
+}
