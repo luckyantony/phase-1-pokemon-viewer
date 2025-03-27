@@ -52,3 +52,17 @@ async function fetchPokemon() {
         console.error('Error fetching Pokémon:', error);
     }
 }
+
+function renderPokemon() {
+    pokemonGrid.innerHTML = '';
+    filteredPokemon.forEach(pokemon => {
+        const card = document.createElement('div');
+        card.className = 'pokemon-card';
+        card.innerHTML = `
+            <img src="${pokemon.image}" alt="${pokemon.name}">
+            <h3>${pokemon.name}</h3>
+        `;
+        card.addEventListener('click', () => showPokemonDetails(pokemon));
+        pokemonGrid.appendChild(card);
+    });
+}
