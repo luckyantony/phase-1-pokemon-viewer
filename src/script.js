@@ -124,18 +124,34 @@ loadNotes();
 
 function loadNotes() {
     fetch(NOTES_URL)
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        })
         .then(notes => {
             notesList.innerHTML = notes.map(note => `
-                <div class="note-item">
+                <div class="note-item" data-id="${note.id}">
                     ${note.text}
-                    <button onclick="deleteNote(${note.id})">X</button>
+                    <button class="delete-btn">X</button>
                 </div>
             `).join('');
+
+            // Add event listeners to all delete buttons
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const noteId = this.parentElement.getAttribute('data-id');
+                    deleteNote(noteId);
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error loading notes:', error);
+            notesList.innerHTML = '<p>Error loading notes. Please try again.</p>';
         });
 }
 
-addNoteBtn.onclick = () => {
+addNoteBtn.addEventListener('click', function(e) {
+    e.preventDefault();
     if (!noteInput.value) return;
     
     fetch(NOTES_URL, {
@@ -146,13 +162,24 @@ addNoteBtn.onclick = () => {
             createdAt: new Date().toISOString()
         })
     })
+    .then(res => {
+        if (!res.ok) throw new Error('Failed to add note');
+        return res.json();
+    })
     .then(() => {
         noteInput.value = '';
         loadNotes();
-    });
-};
+    })
+    .catch(error => console.error('Error adding note:', error));
+});
 
-window.deleteNote = function(id) {  // Make it globally available
-    fetch(`${NOTES_URL}/${id}`, { method: 'DELETE' })
-        .then(loadNotes);
+function deleteNote(id) {
+    fetch(`${NOTES_URL}/${id}`, { 
+        method: 'DELETE' 
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Failed to delete note');
+        loadNotes();
+    })
+    .catch(error => console.error('Error deleting note:', error));
 }
