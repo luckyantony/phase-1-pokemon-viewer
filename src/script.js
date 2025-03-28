@@ -102,7 +102,32 @@ function createTypeFilters() {
     });
 }
 
+function toggleTypeFilter(type) {
+    const index = selectedTypes.indexOf(type);
+    if (index === -1) {
+        selectedTypes.push(type);
+    } else {
+        selectedTypes.splice(index, 1);
+    }
+    handleSearch();
+}
+
 const NOTES_URL = 'http://localhost:3000/notes';
 const notesList = document.getElementById('notesList');
 const noteInput = document.getElementById('noteInput');
 const addNoteBtn = document.getElementById('addNoteBtn');
+
+// Comment section
+
+function loadNotes() {
+    fetch(NOTES_URL)
+        .then(res => res.json())
+        .then(notes => {
+            notesList.innerHTML = notes.map(note => `
+                <div class="note-item">
+                    ${note.text}
+                    <button onclick="deleteNote(${note.id})">X</button>
+                </div>
+            `).join('');
+        });
+}
