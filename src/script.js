@@ -36,7 +36,7 @@ function fetchPokemon() {
                             weight: details.weight,
                             types: details.types.map(t => t.type.name)
                         });
-                        // Update UI after each Pokémon loads
+                        
                         if (allPokemon.length === data.results.length) {
                             filteredPokemon = [...allPokemon];
                             renderPokemon();
