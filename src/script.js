@@ -156,6 +156,7 @@ addNoteBtn.addEventListener('click', function(e) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
             text: noteInput.value,
+            createdAt: new Date().toISOString()
             
         })
     })
