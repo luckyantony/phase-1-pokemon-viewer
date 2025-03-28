@@ -104,3 +104,13 @@ header {
     border-radius: 8px;
 }
 
+#noteInput {
+    padding: 8px;
+    width: 1000px;
+    margin-right: 5px;
+}
+
+#addNoteBtn {
+    padding: 8px 15px;
+}
+
