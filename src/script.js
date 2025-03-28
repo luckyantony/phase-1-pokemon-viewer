@@ -151,3 +151,8 @@ addNoteBtn.onclick = () => {
         loadNotes();
     });
 };
+
+window.deleteNote = function(id) {  // Make it globally available
+    fetch(`${NOTES_URL}/${id}`, { method: 'DELETE' })
+        .then(loadNotes);
+}
