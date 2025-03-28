@@ -13,40 +13,38 @@ let selectedTypes = [];
 
 searchInput.addEventListener('input', handleSearch);
 closeBtn.addEventListener('click', closeModal);
-window.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-});
+
 
 fetchPokemon();
 createTypeFilters();
 
 
-async function fetchPokemon() {
-    try {
-        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=50');
-        const data = await response.json();
-        
-        
-        const pokemonWithDetails = await Promise.all(
-            data.results.map(async (pokemon) => {
-                const details = await fetch(pokemon.url).then(res => res.json());
-                return {
-                    id: details.id,
-                    name: details.name,
-                    image: details.sprites.front_default,
-                    height: details.height,
-                    weight: details.weight,
-                    types: details.types.map(t => t.type.name)
-                };
-            })
-        );
-        
-        allPokemon = pokemonWithDetails;
-        filteredPokemon = [...allPokemon];
-        renderPokemon();
-    } catch (error) {
-        console.error('Error fetching Pokémon:', error);
-    }
+function fetchPokemon() {
+    fetch('https://pokeapi.co/api/v2/pokemon?limit=50')
+        .then(response => response.json())
+        .then(data => {
+            allPokemon = [];
+            data.results.forEach(pokemon => {
+                fetch(pokemon.url)
+                    .then(res => res.json())
+                    .then(details => {
+                        allPokemon.push({
+                            id: details.id,
+                            name: details.name,
+                            image: details.sprites.front_default,
+                            height: details.height,
+                            weight: details.weight,
+                            types: details.types.map(t => t.type.name)
+                        });
+                        // Update UI after each Pokémon loads
+                        if (allPokemon.length === data.results.length) {
+                            filteredPokemon = [...allPokemon];
+                            renderPokemon();
+                        }
+                    });
+            });
+        })
+        .catch(err => console.error("Error:", err));
 }
 
 function renderPokemon() {
@@ -117,8 +115,7 @@ const notesList = document.getElementById('notesList');
 const noteInput = document.getElementById('noteInput');
 const addNoteBtn = document.getElementById('addNoteBtn');
 
-// Initialize notes
-loadNotes();
+
 
 // Comment section
 
@@ -159,7 +156,7 @@ addNoteBtn.addEventListener('click', function(e) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
             text: noteInput.value,
-            createdAt: new Date().toISOString()
+            
         })
     })
     .then(res => {
@@ -183,3 +180,6 @@ function deleteNote(id) {
     })
     .catch(error => console.error('Error deleting note:', error));
 }
+
+// Initialize notes
+loadNotes();
