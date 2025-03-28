@@ -110,7 +110,7 @@ function toggleTypeFilter(type) {
     handleSearch();
 }
 
-const NOTES_URL = '';
+const NOTES_URL = 'https://fluttercuties-db.vercel.app/characters';
 const notesList = document.getElementById('notesList');
 const noteInput = document.getElementById('noteInput');
 const addNoteBtn = document.getElementById('addNoteBtn');
