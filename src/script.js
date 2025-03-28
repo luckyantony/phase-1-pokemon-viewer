@@ -117,6 +117,9 @@ const notesList = document.getElementById('notesList');
 const noteInput = document.getElementById('noteInput');
 const addNoteBtn = document.getElementById('addNoteBtn');
 
+// Initialize notes
+loadNotes();
+
 // Comment section
 
 function loadNotes() {
@@ -131,3 +134,20 @@ function loadNotes() {
             `).join('');
         });
 }
+
+addNoteBtn.onclick = () => {
+    if (!noteInput.value) return;
+    
+    fetch(NOTES_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            text: noteInput.value,
+            createdAt: new Date().toISOString()
+        })
+    })
+    .then(() => {
+        noteInput.value = '';
+        loadNotes();
+    });
+};
