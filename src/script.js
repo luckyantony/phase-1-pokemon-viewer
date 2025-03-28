@@ -90,6 +90,18 @@ function handleSearch() {
     renderPokemon();
 }
 
+function createTypeFilters() {
+    const types = ['fire', 'water', 'grass', 'electric', 'poison', 'flying', 'bug', 'normal'];
+    
+    types.forEach(type => {
+        const button = document.createElement('button');
+        button.textContent = type;
+        button.className = 'type-btn';
+        button.addEventListener('click', () => toggleTypeFilter(type));
+        typeFilters.appendChild(button);
+    });
+}
+
 const NOTES_URL = 'http://localhost:3000/notes';
 const notesList = document.getElementById('notesList');
 const noteInput = document.getElementById('noteInput');
