@@ -93,3 +93,14 @@ header {
     font-weight: bold;
     cursor: pointer;
 }
+
+/* Comments section */
+
+.simple-notes {
+    padding: 15px;
+    margin: 20px;
+    background-color: black;
+    background: #f0f0f0;
+    border-radius: 8px;
+}
+
