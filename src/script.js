@@ -110,7 +110,7 @@ function toggleTypeFilter(type) {
     handleSearch();
 }
 
-const NOTES_URL = 'http://localhost:3000/notes';
+const NOTES_URL = '';
 const notesList = document.getElementById('notesList');
 const noteInput = document.getElementById('noteInput');
 const addNoteBtn = document.getElementById('addNoteBtn');
